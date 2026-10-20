@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <title>Panou Admin — Aventura Travel</title>
+    <%- include('../fragmente/head.ejs') %>
+    <link rel="stylesheet" href="/resurse/css/app-features.css">
+    <script src="/vendor/chart.js/chart.umd.js"></script>
+</head>
+<body>
+<%- include('../fragmente/header.ejs') %>
+<main class="pagina-aplicatie pagina-admin">
+    <span class="eticheta-pagina">Back office</span>
+    <h1>Panou <%= user.rol === 'administrator' ? 'Administrator' : 'Angajat' %></h1>
+    <p class="introducere">Monitorizează rezervări, venituri, utilizatori, pachete turistice, recenzii și promoții dintr-un singur loc.</p>
+    <nav class="file-admin">
+        <button type="button" data-tab="panou" class="activ">Dashboard</button>
+        <button type="button" data-tab="pachete">Pachete</button>
+        <button type="button" data-tab="rezervari">Rezervări</button>
+        <% if (user.rol === 'administrator') { %><button type="button" data-tab="utilizatori">Utilizatori</button><% } %>
+        <button type="button" data-tab="recenzii">Recenzii</button>
+        <% if (user.rol === 'administrator') { %><button type="button" data-tab="promotii">Promoții</button><% } %>
+        <% if (user.rol === 'administrator') { %><button type="button" data-tab="rapoarte">Rapoarte</button><% } %>
+        <% if (user.rol === 'administrator') { %><button type="button" data-tab="joc">Travel Rewards</button><% } %>
+    </nav>
+
+    <section id="fila-panou" class="fila-admin activ">
+        <div class="grila-statistici" id="carduri-statistici"></div>
+        <div class="grila-grafice">
+            <div><h3>Rezervări / lună</h3><canvas id="chart-rezervari"></canvas></div>
+            <div><h3>Venituri / lună</h3><canvas id="chart-venituri"></canvas></div>
+            <div><h3>Destinații populare</h3><canvas id="chart-dest"></canvas></div>
+        </div>
+    </section>
+
+    <section id="fila-pachete" class="fila-admin">
+        <h2>Gestionare pachete</h2>
+        <details class="invelis-formular-admin">
+            <summary>+ Adaugă pachet nou</summary>
+            <form id="form-pachet" class="formular-aplicatie formular-grila">
+                <label>Destinație <input name="destinatie" required></label>
+                <label>Țară <input name="tara"></label>
+                <label>Oraș <input name="oras"></label>
+                <label>Preț <input name="pret" type="number" required></label>
+                <label>Reducere % <input name="reducere_procent" type="number" value="0"></label>
+                <label>Durată zile <input name="durata_zile" type="number" required></label>
+                <label>Tip
+                    <select name="tip_turism"><option>cultural</option><option>aventura</option><option>relaxare</option><option>urban</option></select>
+                </label>
+                <label>Categorie
+                    <select name="categorie"><option>standard</option><option>lux</option><option>familie</option><option>cuplu</option></select>
+                </label>
+                <label>Locuri <input name="locuri_disponibile" type="number" value="20"></label>
+                <label>Hotel <input name="hotel_nume"></label>
+                <label>Lat <input name="latitudine" type="number" step="any"></label>
+                <label>Lng <input name="longitudine" type="number" step="any"></label>
+                <label class="latime-completa">Descriere <textarea name="descriere"></textarea></label>
+                <label class="latime-completa">Facilități (virgule) <input name="facilitati"></label>
+                <button type="submit" class="btn btn-primary">Salvează</button>
+            </form>
+        </details>
+        <div id="editor-pachet" class="invelis-formular-admin" hidden>
+            <h3>Editare pachet #<span id="edit-pid"></span></h3>
+            <form id="form-edit-pachet" class="formular-aplicatie formular-grila">
+                <input type="hidden" name="id">
+                <label>Destinație <input name="destinatie" required></label>
+                <label>Țară <input name="tara"></label>
+                <label>Oraș <input name="oras"></label>
+                <label>Preț <input name="pret" type="number" required></label>
+                <label>Reducere % <input name="reducere_procent" type="number" value="0"></label>
+                <label>Durată zile <input name="durata_zile" type="number" required></label>
+                <label>Tip
+                    <select name="tip_turism"><option>cultural</option><option>aventura</option><option>relaxare</option><option>urban</option></select>
+                </label>
+                <label>Categorie
+                    <select name="categorie"><option>standard</option><option>lux</option><option>familie</option><option>cuplu</option></select>
+                </label>
+                <label>Locuri <input name="locuri_disponibile" type="number"></label>
+                <label>Hotel <input name="hotel_nume"></label>
+                <label>Lat <input name="latitudine" type="number" step="any"></label>
+                <label>Lng <input name="longitudine" type="number" step="any"></label>
+                <label>Activ
+                    <select name="activ"><option value="true">da</option><option value="false">nu</option></select>
+                </label>
+                <label class="latime-completa">Imagine principală <input name="imagine"></label>
+                <label class="latime-completa">Descriere <textarea name="descriere"></textarea></label>
+                <label class="latime-completa">Facilități (virgule) <input name="facilitati"></label>
+                <button type="submit" class="btn btn-primary">Actualizează</button>
+                <button type="button" class="btn btn-contur" id="btn-inchide-edit">Închide</button>
+            </form>
+        </div>
+        <div id="lista-pachete-admin" class="invelis-tabel-admin"></div>
+        <div id="zona-incarcare" class="zona-incarcare" hidden>
+            <h3>Upload imagini pentru pachet #<span id="id-incarcare"></span></h3>
+            <input type="file" id="fisiere-incarcare" accept="image/*" multiple>
+            <div id="previzualizare-incarcare" class="previzualizare-incarcare"></div>
+            <button type="button" id="buton-incarcare" class="btn btn-primary">Încarcă & comprimă</button>
+            <div id="lista-imagini-admin" class="invelis-tabel-admin"></div>
+        </div>
+        <div id="perioade-zone" class="invelis-formular-admin" hidden>
+            <h3>Perioade disponibile pentru pachet #<span id="perioade-pid"></span></h3>
+            <form id="form-perioada" class="formular-aplicatie formular-grila">
+                <input type="hidden" name="id">
+                <input type="hidden" name="pachet_id">
+                <label>Data start <input name="data_start" type="date" required></label>
+                <label>Data end <input name="data_end" type="date" required></label>
+                <label>Locuri <input name="locuri" type="number" value="20" required></label>
+                <label>Preț special <input name="pret_special" type="number" step="0.01"></label>
+                <button type="submit" class="btn btn-primary">Salvează perioada</button>
+                <button type="button" class="btn btn-contur" id="btn-reset-perioada">Perioadă nouă</button>
+            </form>
+            <div id="lista-perioade-admin" class="invelis-tabel-admin"></div>
+        </div>
+    </section>
+
+    <section id="fila-rezervari" class="fila-admin">
+        <h2>Gestionare rezervări</h2>
+        <div id="lista-rez-admin" class="invelis-tabel-admin"></div>
+    </section>
+
+    <section id="fila-utilizatori" class="fila-admin">
+        <h2>Utilizatori</h2>
+        <div id="lista-utilizatori" class="invelis-tabel-admin"></div>
+    </section>
+
+    <section id="fila-recenzii" class="fila-admin">
+        <h2>Moderare recenzii</h2>
+        <div id="lista-recenzii-admin" class="invelis-tabel-admin"></div>
+    </section>
+
+    <section id="fila-promotii" class="fila-admin">
+        <h2>Notificări promoționale</h2>
+        <p>Trimite o promoție către toți clienții activi. Mesajul apare în notificări și se trimite pe email dacă SMTP este configurat.</p>
+        <form id="form-promotie" class="formular-aplicatie">
+            <label>Subiect <input name="subiect" required></label>
+            <label>Mesaj <textarea name="mesaj" required></textarea></label>
+            <button type="submit" class="btn btn-primary">Trimite promoția</button>
+        </form>
+        <p id="promotie-status"></p>
+    </section>
+
+    <section id="fila-rapoarte" class="fila-admin">
+        <h2>Rapoarte</h2>
+        <div id="lista-raport" class="invelis-tabel-admin"></div>
+    </section>
+
+    <section id="fila-joc" class="fila-admin">
+        <h2>Travel Rewards — Gamification</h2>
+        <div class="grila-statistici" id="statistici-joc"></div>
+
+        <details class="invelis-formular-admin" open>
+            <summary>Recompense (rewards)</summary>
+            <form id="formular-recompensa" class="formular-aplicatie formular-grila">
+                <input type="hidden" name="id">
+                <label>Nume <input name="nume" required></label>
+                <label>Tip
+                    <select name="tip">
+                        <option value="discount">discount</option>
+                        <option value="xp">xp</option>
+                        <option value="voucher">voucher</option>
+                        <option value="double_xp">double_xp</option>
+                    </select>
+                </label>
+                <label>Valoare <input name="valoare" type="number" step="0.01" value="5" required></label>
+                <label>Probabilitate <input name="probabilitate" type="number" step="0.01" value="10" required></label>
+                <label>Culoare <input name="culoare" value="#0f68b1"></label>
+                <label>Iconiță <input name="iconita" value="gift"></label>
+                <label>Descriere <input name="descriere"></label>
+                <label>Activ
+                    <select name="activ"><option value="true">da</option><option value="false">nu</option></select>
+                </label>
+                <button type="submit" class="btn btn-primary">Salvează recompensa</button>
+            </form>
+            <div id="lista-recompense-admin" class="invelis-tabel-admin"></div>
+        </details>
+
+        <details class="invelis-formular-admin" open>
+            <summary>Întrebări quiz</summary>
+            <div class="formular-aplicatie formular-grila" style="margin-bottom:0.75rem">
+                <label>Filtru categorie
+                    <select id="filtru-quiz-categorie">
+                        <option value="">Toate</option>
+                        <option>Geography</option><option>Capitals</option><option>Landmarks</option>
+                        <option>Culture</option><option>Tourism</option><option>Airlines</option>
+                        <option>Europe</option><option>World</option>
+                    </select>
+                </label>
+                <label>Filtru dificultate
+                    <select id="filtru-quiz-dificultate">
+                        <option value="">Toate</option>
+                        <option>Easy</option><option>Medium</option><option>Hard</option>
+                    </select>
+                </label>
+                <button type="button" class="btn btn-contur" id="buton-filtru-quiz">Filtrează</button>
+            </div>
+            <form id="formular-quiz" class="formular-aplicatie formular-grila">
+                <input type="hidden" name="id">
+                <label class="latime-completa">Întrebare <input name="intrebare" required></label>
+                <label>A <input name="optiune_a" required></label>
+                <label>B <input name="optiune_b" required></label>
+                <label>C <input name="optiune_c" required></label>
+                <label>D <input name="optiune_d" required></label>
+                <label>Răspuns corect
+                    <select name="raspuns_corect"><option>A</option><option>B</option><option>C</option><option>D</option></select>
+                </label>
+                <label>Categorie
+                    <select name="categorie">
+                        <option>Geography</option><option>Capitals</option><option>Landmarks</option>
+                        <option>Culture</option><option>Tourism</option><option>Airlines</option>
+                        <option>Europe</option><option>World</option>
+                    </select>
+                </label>
+                <label>Dificultate
+                    <select name="dificultate"><option>Easy</option><option>Medium</option><option>Hard</option></select>
+                </label>
+                <label class="latime-completa">Explicație <input name="explicatie"></label>
+                <button type="submit" class="btn btn-primary">Salvează întrebarea</button>
+            </form>
+            <div id="lista-quiz-admin" class="invelis-tabel-admin"></div>
+        </details>
+    </section>
+</main>
+<%- include('../fragmente/footer.ejs') %>
+<script src="/js/administrare.js"></script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta name="description" content="Pachete turistice Aventura Travel — destinații, city break-uri și vacanțe.">
+    <meta name="keywords" content="agentie de turism,Aventura travel,vacanta,Pachete turistice">
+    <title>Pachete turistice — Aventura Travel</title>
+    <%- include("../fragmente/head") %>
+    <link rel="stylesheet" href="/resurse/css/produse.css" type="text/css" />
+    <link rel="stylesheet" href="/resurse/css/app-features.css">
+    <script type="text/javascript" src="/js/produse.js"></script>
+</head>
+<body>
+<%- include("../fragmente/header") %>
+<main class="pagina-aplicatie">
+    <span class="eticheta-pagina">Catalog turistic</span>
+    <h1>Pachete turistice pentru orice stil de vacanță</h1>
+    <p class="introducere">Explorează destinații culturale, aventuri, sejururi de relaxare și city break-uri, cu rezervare online și locuri actualizate.</p>
+
+    <div class="bara-catalog">
+        <div class="actiuni-catalog">
+            <a class="btn btn-primary" href="/cautare">Căutare avansată</a>
+            <a class="btn btn-contur" href="/recomandari">Recomandări inteligente</a>
+        </div>
+        <div class="filtre-rapide">
+            <a class="btn btn-contur" href="/produse">Toate</a>
+            <a class="btn btn-contur" href="/produse?tip=cultural">Cultural</a>
+            <a class="btn btn-contur" href="/produse?tip=aventura">Aventură</a>
+            <a class="btn btn-contur" href="/produse?tip=relaxare">Relaxare</a>
+            <a class="btn btn-contur" href="/produse?tip=urban">Urban</a>
+        </div>
+    </div>
+
+    <section class="panou-filtre" aria-label="Filtre rapide catalog">
+        <label>Nume destinație <input type="text" id="inp-nume" placeholder="ex: Paris, Roma, Bali"></label>
+        <label>Preț minim <input type="range" id="inp-pret" value="0" min="0" max="5000"> <span id="infoRange">(0)</span></label>
+        <label>Categorie
+            <select id="inp-categorie">
+                <option id="sel-toate" selected value="toate">toate</option>
+                <% for (let opt of locals.optiuni) { %>
+                    <option value="<%- opt.unnest %>"><%- opt.unnest %></option>
+                <% } %>
+            </select>
+        </label>
+        <p class="actiuni-filtre">
+            <button id="filtrare" class="btn btn-primary" type="button">Filtrează</button>
+            <button id="resetare" class="btn btn-contur" type="button">Resetează</button>
+            <button id="sortCrescNume" class="btn btn-contur" type="button">Sortează A-Z</button>
+            <button id="sortDescrescNume" class="btn btn-contur" type="button">Sortează Z-A</button>
+        </p>
+        <p id="p-suma" class="estompat">Apăsați Alt+"c" pentru suma prețurilor pachetelor afișate.</p>
+    </section>
+
+    <section id="produse">
+        <h2>Destinații<% if (filtruTip) { %> — <%= filtruTip %><% } %></h2>
+        <div class="grila-produse grila-pachete">
+            <% for (let prod of locals.produse) { %>
+                <%- include('../fragmente/card-pachet.ejs', { pachet: prod }) %>
+            <% } %>
+        </div>
+    </section>
+</main>
+<%- include("../fragmente/footer") %>
+</body>
+</html>

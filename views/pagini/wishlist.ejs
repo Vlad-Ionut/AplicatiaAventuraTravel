@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <title>Wishlist — Aventura Travel</title>
+    <%- include('../fragmente/head.ejs') %>
+    <link rel="stylesheet" href="/resurse/css/app-features.css">
+    <link rel="stylesheet" href="/resurse/css/produse.css">
+</head>
+<body>
+<%- include('../fragmente/header.ejs') %>
+<main class="pagina-aplicatie">
+    <span class="eticheta-pagina">Wishlist</span>
+    <h1>Vacanțe favorite</h1>
+    <% if (!items.length) { %>
+    <section>
+        <h2>Wishlist-ul este gol</h2>
+        <p class="estompat">Adaugă pachete din pagina de detaliu pentru a compara rapid vacanțele preferate.</p>
+        <a class="btn btn-primary" href="/produse">Explorează pachete</a>
+    </section>
+    <% } %>
+    <div class="grila-pachete">
+        <% items.forEach(function(p){ %>
+            <%- include('../fragmente/card-pachet.ejs', { pachet: p, showRemoveWishlist: true }) %>
+        <% }) %>
+    </div>
+</main>
+<%- include('../fragmente/footer.ejs') %>
+<script>
+document.querySelectorAll('.buton-elimina-favorit').forEach(btn => {
+    btn.addEventListener('click', async () => {
+        await fetch('/api/wishlist/' + btn.dataset.id, { method: 'DELETE' });
+        location.reload();
+    });
+});
+</script>
+</body>
+</html>

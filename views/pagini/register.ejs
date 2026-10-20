@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <title>Înregistrare — Aventura Travel</title>
+    <%- include('../fragmente/head.ejs') %>
+    <link rel="stylesheet" href="/resurse/css/app-features.css">
+</head>
+<body>
+<%- include('../fragmente/header.ejs') %>
+<main class="pagina-aplicatie">
+    <section class="card-autentificare">
+        <span class="eticheta-pagina">Începe călătoria</span>
+        <h1>Creează cont</h1>
+        <p class="introducere">Salvează vacanțe favorite, gestionează rezervări și primește recomandări pe baza istoricului.</p>
+        <form id="form-register" class="formular-aplicatie">
+            <label>Nume <input type="text" name="nume" required></label>
+            <label>Email <input type="email" name="email" required></label>
+            <label>Telefon <input type="tel" name="telefon"></label>
+            <label>Parolă <input type="password" name="parola" minlength="6" required></label>
+            <p id="reg-eroare" class="eroare-formular" hidden></p>
+            <button type="submit" class="btn btn-primary">Înregistrează-te</button>
+        </form>
+        <p>Ai deja cont? <a href="/login">Autentifică-te</a></p>
+    </section>
+</main>
+<%- include('../fragmente/footer.ejs') %>
+<script>
+document.getElementById('form-register').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const err = document.getElementById('reg-eroare');
+    err.hidden = true;
+    const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(fd))
+    });
+    const data = await res.json();
+    if (!res.ok) { err.textContent = data.error || 'Eroare'; err.hidden = false; return; }
+    location.href = '/';
+});
+</script>
+</body>
+</html>

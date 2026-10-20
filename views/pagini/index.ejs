@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <title>Aventura Travel — Vacanțe premium și rezervări online</title>
+    <meta name="keywords" content="agenție de turism, oferte de vacanță, pachete turistice, city break, destinații turistice">
+    <meta name="description" content="Aventura Travel este o platformă modernă pentru pachete turistice, rezervări online, recomandări inteligente și hartă interactivă.">
+    <%- include('../fragmente/head.ejs') %>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body>
+<%- include('../fragmente/header.ejs') %>
+
+<%
+const fallbackDestinations = [
+    {
+        id: 1,
+        destinatie: 'Bali',
+        tara: 'Indonezia',
+        descriere: 'Plaje exotice, resorturi premium și apusuri spectaculoase.',
+        imagine: 'bali.jpg',
+        tip_turism: 'relaxare'
+    },
+    {
+        id: 2,
+        destinatie: 'Paris',
+        tara: 'Franța',
+        descriere: 'City break romantic, gastronomie și obiective iconice.',
+        imagine: 'paris.jpg',
+        tip_turism: 'urban'
+    },
+    {
+        id: 3,
+        destinatie: 'Grecia',
+        tara: 'Grecia',
+        descriere: 'Insule albe, mare turcoaz și vacanțe pentru familii.',
+        imagine: 'grecia.jpg',
+        tip_turism: 'relaxare'
+    },
+    {
+        id: 4,
+        destinatie: 'Alpi',
+        tara: 'Elveția',
+        descriere: 'Aventură montană, trasee alpine și peisaje memorabile.',
+        imagine: 'alpi.jpg',
+        tip_turism: 'aventura'
+    }
+];
+
+const fallbackPackages = [
+    { id: 1, destinatie: 'Bali Escape', tara: 'Indonezia', imagine: 'bali.jpg', pret: 3890, pret_final: 3490, durata_zile: 7, rating: 4.9, reducere_procent: 10, tip_turism: 'relaxare' },
+    { id: 2, destinatie: 'Paris City Break', tara: 'Franța', imagine: 'paris.jpg', pret: 2190, pret_final: 1990, durata_zile: 4, rating: 4.8, reducere_procent: 8, tip_turism: 'urban' },
+    { id: 3, destinatie: 'Grecia Family', tara: 'Grecia', imagine: 'grecia.jpg', pret: 2690, pret_final: 2490, durata_zile: 6, rating: 4.7, reducere_procent: 5, tip_turism: 'relaxare' },
+    { id: 4, destinatie: 'Alpi Adventure', tara: 'Austria', imagine: 'alpi.jpg', pret: 2990, pret_final: 2790, durata_zile: 5, rating: 4.8, reducere_procent: 6, tip_turism: 'aventura' },
+    { id: 5, destinatie: 'Roma Cultural', tara: 'Italia', imagine: 'roma.jpg', pret: 2290, pret_final: 2090, durata_zile: 4, rating: 4.6, reducere_procent: 7, tip_turism: 'cultural' },
+    { id: 6, destinatie: 'Caraibe All Inclusive', tara: 'Caraibe', imagine: 'caraibe.jpg', pret: 5290, pret_final: 4890, durata_zile: 8, rating: 4.9, reducere_procent: 9, tip_turism: 'relaxare' }
+];
+
+const destinations = (locals.destinatiiPopulare && locals.destinatiiPopulare.length ? locals.destinatiiPopulare : fallbackDestinations).slice(0, 4);
+const packages = (locals.pacheteRecomandate && locals.pacheteRecomandate.length ? locals.pacheteRecomandate : fallbackPackages).slice(0, 6);
+const gallery = (locals.imagini || []).slice(0, 6);
+const mapPoints = (locals.puncteHarta && locals.puncteHarta.length ? locals.puncteHarta : [
+    { destinatie: 'Paris', hotel_nume: 'Hotel Paris Central', latitudine: 48.8566, longitudine: 2.3522 },
+    { destinatie: 'Roma', hotel_nume: 'Roma Boutique Stay', latitudine: 41.9028, longitudine: 12.4964 },
+    { destinatie: 'Bali', hotel_nume: 'Bali Ocean Resort', latitudine: -8.3405, longitudine: 115.0920 },
+    { destinatie: 'Barcelona', hotel_nume: 'Barcelona City Hotel', latitudine: 41.3874, longitudine: 2.1686 }
+]);
+
+function imagePath(item) {
+    if (!item || !item.imagine) return '/resurse/imagini/galerie/mare/1.jpg';
+    return String(item.imagine).startsWith('/') ? item.imagine : '/resurse/imagini/pachete/' + item.imagine;
+}
+
+function finalPrice(item) {
+    if (item.pret_final) return Math.round(Number(item.pret_final));
+    const price = Number(item.pret || 0);
+    const discount = Number(item.reducere_procent || 0);
+    return Math.round(price * (1 - discount / 100));
+}
+%>
+
+<main class="acasa-calatorii">
+    <section class="erou-acasa" aria-labelledby="titlu-erou">
+        <div class="strat-erou-acasa"></div>
+        <div class="invelis-acasa continut-erou-acasa">
+            <span class="eticheta-acasa">Aventura Travel 2026</span>
+            <h1 id="titlu-erou">Descoperă vacanțe premium, rezervate simplu și sigur.</h1>
+            <p>
+                Compară destinații, verifică disponibilitatea, primește recomandări inteligente și rezervă online următoarea aventură.
+            </p>
+
+            <form class="cautare-acasa" action="/cautare" method="get" aria-label="Caută pachete turistice">
+                <label>
+                    <span>Destinație</span>
+                    <input name="destinatie" type="text" placeholder="Paris, Bali, Grecia">
+                </label>
+                <label>
+                    <span>Buget maxim</span>
+                    <input name="buget_max" type="number" min="0" placeholder="3500 RON">
+                </label>
+                <label>
+                    <span>Perioadă</span>
+                    <input name="data_start" type="date">
+                </label>
+                <label>
+                    <span>Persoane</span>
+                    <input name="persoane" type="number" min="1" value="2">
+                </label>
+                <button class="buton-acasa buton-acasa-principal" type="submit">Rezervă acum</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="sectiune-acasa invelis-acasa" aria-labelledby="titlu-populare">
+        <div class="cap-sectiune-acasa">
+            <span class="eticheta-acasa">Top destinații</span>
+            <h2 id="titlu-populare">Destinații populare</h2>
+            <p>Patru direcții inspirate pentru călătorii memorabile, cu experiențe potrivite pentru relaxare, city break sau aventură.</p>
+        </div>
+        <div class="grila-destinatii">
+            <% destinations.forEach(function(dest){ %>
+                <article class="card-destinatie">
+                    <img src="<%= imagePath(dest) %>" alt="<%= dest.destinatie %>" loading="lazy" onerror="this.src='/resurse/imagini/galerie/mare/1.jpg'">
+                    <div>
+                        <span><%= dest.tara || dest.tip_turism || 'Destinație recomandată' %></span>
+                        <h3><%= dest.destinatie %></h3>
+                        <p><%= (dest.descriere || 'O destinație selectată pentru clienții Aventura Travel.').slice(0, 105) %></p>
+                        <a class="buton-acasa buton-acasa-luminos" href="/produse?destinatie=<%= encodeURIComponent(dest.destinatie) %>">Vezi</a>
+                    </div>
+                </article>
+            <% }) %>
+        </div>
+    </section>
+
+    <section class="sectiune-acasa invelis-acasa" aria-labelledby="titlu-pachete">
+        <div class="cap-sectiune-acasa">
+            <span class="eticheta-acasa">Recomandate</span>
+            <h2 id="titlu-pachete">Pachete recomandate</h2>
+            <p>O selecție de pachete active, cu preț, durată, rating și acțiune directă către rezervare.</p>
+        </div>
+        <div class="grila-pachete">
+            <% packages.forEach(function(pack){ %>
+                <article class="card-pachet-acasa">
+                    <img src="<%= imagePath(pack) %>" alt="<%= pack.destinatie %>" loading="lazy" onerror="this.src='/resurse/imagini/galerie/mare/1.jpg'">
+                    <div class="corp-pachet">
+                        <div class="meta-pachet">
+                            <span><%= pack.tip_turism || 'vacanță' %></span>
+                            <span>★ <%= Number(pack.rating || 4.8).toFixed(1) %></span>
+                        </div>
+                        <h3><%= pack.destinatie %></h3>
+                        <p><%= pack.tara || pack.oras || 'Pachet turistic Aventura Travel' %></p>
+                        <div class="baza-pachet">
+                            <div>
+                                <strong><%= finalPrice(pack) %> RON</strong>
+                                <span><%= pack.durata_zile || 5 %> zile</span>
+                            </div>
+                            <a class="buton-acasa buton-acasa-principal" href="/produs/<%= pack.id %>">Rezervă</a>
+                        </div>
+                    </div>
+                </article>
+            <% }) %>
+        </div>
+    </section>
+
+    <section class="sectiune-acasa invelis-acasa" aria-labelledby="why-title">
+        <div class="cap-sectiune-acasa">
+            <span class="eticheta-acasa">De ce noi</span>
+            <h2 id="why-title">De ce să alegi Aventura Travel</h2>
+            <p>Experiență digitală completă pentru clienți, de la descoperire până la rezervare și notificări.</p>
+        </div>
+        <div class="grila-facilitati">
+            <article class="card-facilitate">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h3>Secure booking</h3>
+                <p>Autentificare JWT, rezervări urmărite și confirmări prin email.</p>
+            </article>
+            <article class="card-facilitate">
+                <i class="fa-solid fa-tags"></i>
+                <h3>Best prices</h3>
+                <p>Reducerile și prețurile sunt vizibile înainte de rezervare.</p>
+            </article>
+            <article class="card-facilitate">
+                <i class="fa-solid fa-headset"></i>
+                <h3>Customer support</h3>
+                <p>Asistent AI, chat și informații rapide despre destinații.</p>
+            </article>
+            <article class="card-facilitate">
+                <i class="fa-solid fa-award"></i>
+                <h3>Trusted agency</h3>
+                <p>Recenzii, wishlist, istoric rezervări și panou admin complet.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="sectiune-acasa invelis-acasa" aria-labelledby="map-title">
+        <div class="cap-sectiune-acasa">
+            <span class="eticheta-acasa">Hartă interactivă</span>
+            <h2 id="map-title">Explorează locațiile pe hartă</h2>
+            <p>Vezi rapid hoteluri și destinații din pachetele disponibile.</p>
+        </div>
+        <div id="harta-acasa" class="harta-acasa"></div>
+    </section>
+
+    <section class="sectiune-acasa invelis-acasa" aria-labelledby="reviews-title">
+        <div class="cap-sectiune-acasa">
+            <span class="eticheta-acasa">Review-uri</span>
+            <h2 id="reviews-title">Ce spun clienții</h2>
+            <p>O experiență premium trebuie să inspire încredere înainte de rezervare.</p>
+        </div>
+        <div class="grila-recenzii">
+            <article class="card-recenzie">
+                <p>„Am rezervat un city break în Roma în mai puțin de 5 minute. Recomandările au fost foarte potrivite.”</p>
+                <strong>Andreea M.</strong>
+                <span>★★★★★</span>
+            </article>
+            <article class="card-recenzie">
+                <p>„Harta și perioada disponibilă m-au ajutat să aleg rapid hotelul potrivit pentru familie.”</p>
+                <strong>Radu P.</strong>
+                <span>★★★★★</span>
+            </article>
+            <article class="card-recenzie">
+                <p>„Plata simulată și emailul de confirmare fac proiectul foarte clar pentru prezentare.”</p>
+                <strong>Ioana C.</strong>
+                <span>★★★★★</span>
+            </article>
+        </div>
+    </section>
+
+    <section class="sectiune-acasa invelis-acasa" aria-labelledby="gallery-title">
+        <div class="cap-sectiune-acasa">
+            <span class="eticheta-acasa">Galerie</span>
+            <h2 id="gallery-title">Inspirație pentru următoarea vacanță</h2>
+            <p>Maximum 6 imagini, afișate într-un grid aerisit și responsive.</p>
+        </div>
+        <div class="galerie-acasa">
+            <% if (gallery.length) { %>
+                <% gallery.forEach(function(imag){ %>
+                    <figure>
+                        <picture>
+                            <source srcset="<%= imag.fisier_mic %>" media="(max-width:700px)">
+                            <source srcset="<%= imag.fisier_mediu %>" media="(max-width:1200px)">
+                            <img src="<%= imag.fisier %>" alt="<%= imag.alternativ || imag.nume_imag %>" loading="lazy">
+                        </picture>
+                        <figcaption><%= imag.descriere_imag %></figcaption>
+                    </figure>
+                <% }) %>
+            <% } else { %>
+                <% fallbackPackages.slice(0, 6).forEach(function(pack){ %>
+                    <figure>
+                        <img src="<%= imagePath(pack) %>" alt="<%= pack.destinatie %>" loading="lazy">
+                        <figcaption><%= pack.destinatie %></figcaption>
+                    </figure>
+                <% }) %>
+            <% } %>
+        </div>
+    </section>
+</main>
+
+<%- include('../fragmente/footer.ejs') %>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const homeMapPoints = <%- JSON.stringify(mapPoints) %>;
+if (document.getElementById('harta-acasa') && window.L) {
+    const first = homeMapPoints[0] || { latitudine: 44.4268, longitudine: 26.1025 };
+    const map = L.map('harta-acasa', { scrollWheelZoom: false }).setView([Number(first.latitudine), Number(first.longitudine)], 4);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OSM' }).addTo(map);
+    const bounds = [];
+    homeMapPoints.forEach((point) => {
+        const lat = Number(point.latitudine);
+        const lng = Number(point.longitudine);
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+        bounds.push([lat, lng]);
+        L.marker([lat, lng]).addTo(map).bindPopup(`<strong>${point.destinatie}</strong><br>${point.hotel_nume || 'Aventura Travel'}`);
+    });
+    if (bounds.length > 1) map.fitBounds(bounds, { padding: [32, 32] });
+}
+</script>
+</body>
+</html>

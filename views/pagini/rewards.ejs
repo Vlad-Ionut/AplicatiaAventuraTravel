@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <title>Travel Rewards — Aventura Travel</title>
+    <%- include('../fragmente/head.ejs') %>
+    <link rel="stylesheet" href="/resurse/css/app-features.css">
+    <link rel="stylesheet" href="/resurse/css/rewards.css">
+</head>
+<body>
+<%- include('../fragmente/header.ejs') %>
+<main class="pagina-aplicatie pagina-recompense">
+    <span class="eticheta-pagina">Travel Rewards</span>
+    <h1>Învârte roata și câștigă recompense</h1>
+    <p class="introducere">După fiecare rezervare confirmată primești un Spin. Câștigi recompensa doar dacă răspunzi corect la quiz.</p>
+
+    <section class="rezumat-recompense grila-statistici">
+        <div class="card-statistica">
+            <div>Nivel</div>
+            <div class="valoare" id="rec-nivel"><%= profile.nivel %></div>
+        </div>
+        <div class="card-statistica">
+            <div>XP</div>
+            <div class="valoare" id="rec-xp"><%= profile.xp %></div>
+        </div>
+        <div class="card-statistica">
+            <div>Spin-uri disponibile</div>
+            <div class="valoare" id="rec-rotiri"><%= profile.spinsDisponibile %></div>
+        </div>
+        <div class="card-statistica">
+            <div>Discounturi active</div>
+            <div class="valoare"><%= profile.discounturi.length %></div>
+        </div>
+    </section>
+
+    <section class="invelis-bara-xp">
+        <div class="estompat">Progres nivel <%= profile.nivel %> → <%= profile.nivel + 1 %></div>
+        <div class="bara-xp">
+            <div class="umplere-bara-xp" id="rec-xp-umplere" style="width:<%= profile.xpProgress.percent %>%"></div>
+        </div>
+    </section>
+
+    <section class="aranjament-recompense">
+        <div class="panou-roata">
+            <div class="scena-roata">
+                <div class="indicator-roata"></div>
+                <canvas id="roata-recompense" width="360" height="360" aria-label="Roata recompenselor"></canvas>
+                <button type="button" id="buton-invartire" class="btn btn-primary buton-invartire-roata"
+                    <%= profile.spinsDisponibile < 1 ? 'disabled' : '' %>>
+                    Spin the Wheel
+                </button>
+            </div>
+            <p class="estompat" id="indiciu-rotire">
+                <% if (profile.spinsDisponibile < 1) { %>
+                    Nu ai spin-uri. Confirmă o rezervare pentru a debloca unul.
+                <% } else { %>
+                    Ai <%= profile.spinsDisponibile %> spin<%= profile.spinsDisponibile === 1 ? '' : '-uri' %> disponibile.
+                <% } %>
+            </p>
+            <div id="strat-confeti" class="strat-confeti" hidden></div>
+        </div>
+
+        <aside class="lateral-recompense">
+            <h2>Achievements</h2>
+            <div class="grila-realizari">
+                <% profile.achievements.forEach(function(a){ %>
+                <div class="realizare <%= a.unlocked ? 'deblocat' : 'blocat' %>">
+                    <i class="fa-solid fa-<%= a.icon %>"></i>
+                    <span><%= a.nume %></span>
+                </div>
+                <% }) %>
+            </div>
+
+            <h2>Discounturi active</h2>
+            <% if (!profile.discounturi.length) { %>
+                <p class="estompat">Niciun discount activ încă.</p>
+            <% } else { %>
+                <ul class="lista-reduceri">
+                    <% profile.discounturi.forEach(function(d){ %>
+                    <li style="border-left-color:<%= d.culoare %>">
+                        <strong><%= d.nume %></strong>
+                        <span class="estompat"><%= d.descriere || '' %></span>
+                    </li>
+                    <% }) %>
+                </ul>
+            <% } %>
+
+            <h2>Statistici</h2>
+            <ul class="statistici-mici">
+                <li>Spin-uri totale: <strong><%= stats.totalSpins %></strong></li>
+                <li>Recompense câștigate: <strong><%= stats.totalRewards %></strong></li>
+                <li>Răspunsuri corecte: <strong><%= stats.correctPercent %>%</strong></li>
+                <li>Răspunsuri greșite: <strong><%= stats.wrongPercent %>%</strong></li>
+                <li>Cel mai popular: <strong><%= stats.mostPopularReward %></strong></li>
+            </ul>
+        </aside>
+    </section>
+
+    <section class="sectiune-istoric">
+        <h2>Istoric recompense & quiz</h2>
+        <div class="invelis-tabel">
+            <table class="tabel-admin" id="istoric-recompense">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Recompensă</th>
+                        <th>Întrebare</th>
+                        <th>Rezultat</th>
+                        <th>Rezervare</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (!history.length) { %>
+                    <tr><td colspan="5" class="estompat">Nicio rundă încă. Învârte roata după o rezervare confirmată.</td></tr>
+                    <% } %>
+                    <% history.forEach(function(h){ %>
+                    <tr>
+                        <td><%= h.data_creare ? String(h.data_creare).slice(0,16).replace('T',' ') : '—' %></td>
+                        <td><%= h.reward %></td>
+                        <td><%= (h.intrebare || '').slice(0,60) %><%= (h.intrebare || '').length > 60 ? '…' : '' %></td>
+                        <td>
+                            <% if (h.status === 'awaiting_answer') { %>În așteptare
+                            <% } else if (h.corect) { %><span class="succes">Câștigat</span>
+                            <% } else { %><span class="esec">Pierdut</span><% } %>
+                        </td>
+                        <td>#<%= h.rezervare_id || '—' %> <%= h.destinatie || '' %></td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<div id="fereastra-quiz" class="fereastra-recompense" hidden>
+    <div class="card-fereastra-recompense">
+        <div class="progres-quiz"><span id="cronometru-quiz">30</span>s</div>
+        <p class="insigna-tip" id="meta-quiz"></p>
+        <h2 id="intrebare-quiz"></h2>
+        <div class="optiuni-quiz" id="optiuni-quiz"></div>
+        <p id="feedback-quiz" class="feedback-quiz" hidden></p>
+    </div>
+</div>
+
+<div id="fereastra-rezultat" class="fereastra-recompense" hidden>
+    <div class="card-fereastra-recompense card-rezultat">
+        <div id="pictograma-rezultat" class="pictograma-rezultat"></div>
+        <h2 id="titlu-rezultat"></h2>
+        <p id="text-rezultat" class="estompat"></p>
+        <button type="button" class="btn btn-primary" id="inchide-rezultat">Continuă</button>
+    </div>
+</div>
+
+<script>
+window.REWARDS_BOOT = {
+    spins: <%= profile.spinsDisponibile %>,
+    wheel: <%- JSON.stringify(wheel.map(function(r){ return { id: r.id, nume: r.nume, culoare: r.culoare, iconita: r.iconita }; })) %>
+};
+</script>
+<script src="/js/recompense.js"></script>
+<%- include('../fragmente/footer.ejs') %>
+</body>
+</html>

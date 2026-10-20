@@ -1,0 +1,59 @@
+{
+  "name": "agentiedeturism",
+  "version": "2.0.0",
+  "description": "Aventura Travel — agenție de turism online cu auth, rezervări, plăți, AI chatbot, hartă",
+  "keywords": [
+    "agenție",
+    "de",
+    "turism",
+    "oferte",
+    "de",
+    "vacanță",
+    "pachete",
+    "turistice",
+    "city",
+    "break",
+    "destinații",
+    "turistice",
+    "vacanțe",
+    "ieftine"
+  ],
+  "homepage": "https://github.com/Vlad-Ionut/Aventura-Travel#readme",
+  "bugs": {
+    "url": "https://github.com/Vlad-Ionut/Aventura-Travel/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vlad-Ionut/Aventura-Travel.git"
+  },
+  "license": "ISC",
+  "author": "Șalgău Vlad-Ionuț",
+  "type": "commonjs",
+  "main": "js/index.js",
+  "scripts": {
+    "start": "node js/index.js",
+    "dev": "node js/index.js",
+    "db:init": "psql postgresql://vlad1:vlad1@localhost:5432/aventuratravel -f sql/schema.sql && psql postgresql://vlad1:vlad1@localhost:5432/aventuratravel -f sql/seed.sql && psql postgresql://vlad1:vlad1@localhost:5432/aventuratravel -f sql/gamification.sql",
+    "db:gamification": "psql postgresql://vlad1:vlad1@localhost:5432/aventuratravel -f sql/gamification.sql"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "body-parser": "^2.2.0",
+    "bootstrap": "^5.3.8",
+    "chart.js": "^4.5.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "ejs": "^5.0.1",
+    "express": "^5.2.1",
+    "express-session": "^1.18.1",
+    "jsonwebtoken": "^9.0.2",
+    "method-override": "^3.0.0",
+    "multer": "^2.0.1",
+    "nodemailer": "^7.0.3",
+    "pg": "^8.21.0",
+    "sass": "^1.99.0",
+    "sharp": "^0.34.5",
+    "uuid": "^11.1.0"
+  }
+}

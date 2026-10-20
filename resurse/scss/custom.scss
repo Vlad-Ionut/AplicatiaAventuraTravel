@@ -1,0 +1,37 @@
+@use "../../node_modules/bootstrap/scss/bootstrap" with (
+  $primary: #0d6efd,            
+  $secondary: #f59f00,         
+  $success: #2b8a3e,
+  $info: #228be6,
+
+  
+  $body-color: #151515,
+  $body-bg: #88adf7,
+
+  $grid-breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 880px,      
+    lg: 1240px,     
+    xl: 1400px,
+    xxl: 1600px
+  ),
+
+
+  $border-radius: 0.75rem,
+  $border-radius-sm: 0.5rem,
+  $border-radius-lg: 1.25rem,
+  $btn-border-radius: 9999px,   
+
+ 
+  $h1-font-size: 2.6rem,
+  $h2-font-size: 2.1rem,
+  $h3-font-size: 1.7rem,
+
+
+  $font-family-base: "Oswald", 
+  
+  $btn-padding-y: 0.6rem,
+  $btn-padding-x: 1.5rem,
+  $link-decoration: none
+);

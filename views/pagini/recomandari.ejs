@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <title>Recomandări inteligente — Aventura Travel</title>
+    <%- include('../fragmente/head.ejs') %>
+    <link rel="stylesheet" href="/resurse/css/app-features.css">
+    <link rel="stylesheet" href="/resurse/css/produse.css">
+</head>
+<body>
+<%- include('../fragmente/header.ejs') %>
+<main class="pagina-aplicatie">
+    <span class="eticheta-pagina">AI & istoric rezervări</span>
+    <h1>Recomandări inteligente</h1>
+    <p class="introducere"><%= mesaj %></p>
+    <p class="estompat">Tip: <%= tip %><% if (typeof tipuri !== 'undefined' && tipuri && tipuri.length) { %> · bazat pe: <%= tipuri.join(', ') %><% } %></p>
+    <div class="grila-pachete">
+        <% if (!pachete.length) { %>
+            <section>
+                <h2>Nu avem recomandări momentan</h2>
+                <p class="estompat">După primele rezervări, motorul de recomandări poate propune pachete similare istoricului tău.</p>
+            </section>
+        <% } %>
+        <% pachete.forEach(function(p){ %>
+            <%- include('../fragmente/card-pachet.ejs', { pachet: p }) %>
+        <% }) %>
+    </div>
+    <% if (!locals.user) { %>
+    <p class="estompat"><a href="/login">Autentifică-te</a> pentru recomandări personalizate pe baza istoricului.</p>
+    <% } %>
+</main>
+<%- include('../fragmente/footer.ejs') %>
+</body>
+</html>

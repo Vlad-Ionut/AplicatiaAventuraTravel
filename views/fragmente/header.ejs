@@ -1,0 +1,74 @@
+<script src="/js/tema.js"></script>
+<header class="antet-site" id="sus">
+  <nav class="navigatie-principala" aria-label="Navigație principală">
+    <a href="/" class="link-marca" aria-label="Aventura Travel acasă">
+      <span class="sigla-marca"><i class="fa-solid fa-plane-departure"></i></span>
+      <span class="text-marca">
+        <strong>Aventura Travel</strong>
+        <span>Vacanțe inteligente pentru 2026</span>
+      </span>
+    </a>
+
+    <input type="checkbox" id="comutator-meniu" class="comutator-meniu">
+    <label class="buton-meniu" for="comutator-meniu" aria-label="Deschide meniul">
+      <span></span><span></span><span></span>
+    </label>
+
+    <ul class="meniu-principal">
+      <li><a href="/produse"><i class="fa-solid fa-suitcase-rolling"></i> Destinatii</a></li>
+      <li><a href="/cautare"><i class="fa-solid fa-magnifying-glass"></i> Căutare</a></li>
+      <li><a href="/recomandari"><i class="fa-solid fa-wand-magic-sparkles"></i> Recomandări</a></li>
+      <li><a href="/harta"><i class="fa-solid fa-map-location-dot"></i> Hartă</a></li>
+      <li><a href="/chat"><i class="fa-solid fa-comments"></i> AI Chat</a></li>
+      <% if (typeof user !== 'undefined' && user) { %>
+      <li><a href="/rewards"><i class="fa-solid fa-dharmachakra"></i> Rewards</a></li>
+      <% } %>
+      <li>
+        <details class="lista-derulanta">
+          <summary><i class="fa-solid fa-layer-group"></i> Tipuri</summary>
+          <div class="meniu-derulant">
+            <a href="/produse">Toate pachetele</a>
+            <a href="/produse?tip=cultural">Cultural</a>
+            <a href="/produse?tip=aventura">Aventură</a>
+            <a href="/produse?tip=relaxare">Relaxare</a>
+            <a href="/produse?tip=urban">Urban</a>
+          </div>
+        </details>
+      </li>
+      <li>
+        <details class="lista-derulanta">
+          <summary><i class="fa-solid fa-user"></i>
+            <% if (typeof user !== 'undefined' && user) { %>
+              <%= user.nume %>
+            <% } else { %>
+              Cont
+            <% } %>
+          </summary>
+          <div class="meniu-derulant">
+            <% if (typeof user !== 'undefined' && user) { %>
+              <a href="/rezervarile-mele">Rezervările mele</a>
+              <a href="/rewards">Travel Rewards</a>
+              <a href="/wishlist">Wishlist</a>
+              <a href="/notificari" id="link-notificari">Notificări</a>
+              <% if (user.rol === 'administrator' || user.rol === 'angajat') { %>
+                <a href="/admin">Panou admin</a>
+              <% } %>
+              <a href="/logout">Deconectare</a>
+            <% } else { %>
+              <a href="/login">Autentificare</a>
+              <a href="/register">Înregistrare</a>
+            <% } %>
+            <a href="/despre">Despre agenție</a>
+          </div>
+        </details>
+      </li>
+      <li>
+        <label class="eticheta-tema" for="tema" title="Schimbă tema">
+          <i class="fas fa-moon"></i>
+          <span>Temă</span>
+        </label>
+        <input id="tema" class="comutator-tema" type="checkbox">
+      </li>
+    </ul>
+  </nav>
+</header>

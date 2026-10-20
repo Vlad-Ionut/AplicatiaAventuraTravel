@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <title>Resurse proiect — Aventura Travel</title>
+    <meta name="description" content="Resurse suplimentare Aventura Travel: ghid PDF, calculator, playlist, FAQ și informații academice.">
+    <%- include('../fragmente/head.ejs') %>
+</head>
+<body>
+<%- include('../fragmente/header.ejs') %>
+<main class="pagina-aplicatie">
+    <span class="eticheta-pagina">Resurse suplimentare</span>
+    <h1>Resurse proiect și informații utile</h1>
+    <p class="introducere">Aceste secțiuni au fost mutate de pe homepage pentru ca prima pagină să rămână orientată comercial.</p>
+
+    <section id="formula-cost">
+        <h2>Calculator cost vacanță</h2>
+        <p>Costul total al unei vacanțe poate fi estimat cu formula:</p>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mrow>
+                <mi>C</mi><mo>=</mo><mi>N</mi><mo>×</mo><mi>P</mi><mo>+</mo><mi>T</mi><mo>+</mo><mi>A</mi>
+            </mrow>
+        </math>
+        <ul>
+            <li><strong>C</strong> = costul total al vacanței</li>
+            <li><strong>N</strong> = numărul de nopți</li>
+            <li><strong>P</strong> = prețul pe noapte</li>
+            <li><strong>T</strong> = transport</li>
+            <li><strong>A</strong> = activități și excursii opționale</li>
+        </ul>
+    </section>
+
+    <section id="ghid-vacanta">
+        <h2>Ghid de vacanță PDF</h2>
+        <embed src="/resurse/pdf/ghid-de-vacanta.pdf" type="application/pdf" width="100%" height="420">
+        <p><a href="https://www.mae.ro/travel-alerts" target="_blank" rel="noopener noreferrer">Alerte de călătorie MAE</a></p>
+    </section>
+
+    <section id="playlist-videouri">
+        <h2>Playlist destinații turistice</h2>
+        <iframe
+            width="100%"
+            height="360"
+            src="https://www.youtube.com/embed?listType=playlist&list=PL9tY0BWXOZFv9VHtV6nRvWmvMRGsiE9zM&autoplay=0&loop=1&controls=1"
+            title="Playlist YouTube Destinații Turistice"
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+    </section>
+
+    <section id="anunturi">
+        <h2>Anunțuri</h2>
+        <p><time datetime="2026-03-01">1 martie 2026</time> <strong>Actualizare platformă:</strong> homepage modernizat pentru experiență comercială.</p>
+        <p><time datetime="2025-07-05">5 iulie 2025</time> Am adăugat o ofertă nouă.</p>
+        <p><time datetime="2026-01-01">1 ianuarie 2026</time> Un an nou fericit!</p>
+    </section>
+
+    <section id="descriere-site">
+        <h2>Despre noi</h2>
+        <p>Aventura Travel este o agenție de turism specializată în experiențe de călătorie memorabile, pachete personalizate și servicii digitale moderne pentru rezervare, recomandări și comunicare cu clienții.</p>
+        <p>Echipa oferă consultanță pentru alegerea perioadei ideale, a tipului de cazare și a activităților potrivite, cu accent pe calitate, siguranță și satisfacția clientului.</p>
+    </section>
+
+    <section id="index-intrebari">
+        <h2>Întrebări frecvente</h2>
+        <details>
+            <summary>Cum pot să rezerv o călătorie cu Aventura Travel?</summary>
+            <p>Poți rezerva direct din pagina unui pachet, alegând perioada și numărul de persoane.</p>
+        </details>
+        <details>
+            <summary>Care sunt modalitățile de plată acceptate?</summary>
+            <p>Aplicația include plată simulată pentru Stripe, PayPal, Netopia și card.</p>
+        </details>
+        <details>
+            <summary>Pot modifica sau anula o rezervare?</summary>
+            <p>Rezervările pot fi anulate din istoricul contului, în funcție de status.</p>
+        </details>
+    </section>
+
+    <section id="utilizatori">
+        <h2>Utilizatori demo</h2>
+        <ul>
+            <li>Popescu Maria</li>
+            <li>Codrea Iulian</li>
+            <li>Radivoievici Monica</li>
+            <li>Ștefănescu Mihai</li>
+        </ul>
+    </section>
+</main>
+<%- include('../fragmente/footer.ejs') %>
+</body>
+</html>

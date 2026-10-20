@@ -1,0 +1,385 @@
+:root {
+  --at-accent: #05386b;
+  --at-teal: #379683;
+  --at-mint: #5cdb95;
+  --at-light: #edf5e1;
+  --at-danger: #b33a3a;
+  --at-muted: #5a6a7a;
+  --at-radius: 8px;
+}
+
+.pagina-aplicatie {
+  max-width: 1100px;
+  margin: 1.5rem auto 3rem;
+  padding: 0 1rem;
+}
+
+.pagina-aplicatie h1 {
+  color: var(--at-accent);
+  margin-bottom: 0.75rem;
+}
+
+.introducere { font-size: 1.1rem; margin-bottom: 1rem; }
+.estompat { color: var(--at-muted); }
+.eroare-formular { color: var(--at-danger); margin: 0.5rem 0; }
+
+.card-autentificare, .card-plata, .cadru-chat {
+  max-width: 440px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: linear-gradient(160deg, #fff 0%, var(--at-light) 100%);
+  border: 1px solid #c9d6c2;
+  border-radius: var(--at-radius);
+}
+
+.formular-aplicatie {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.formular-aplicatie label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.formular-aplicatie input,
+.formular-aplicatie select,
+.formular-aplicatie textarea,
+.formular-aplicatie option {
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #9bb0a0;
+  border-radius: 4px;
+  font: inherit;
+  background: #fff;
+  color: var(--culoare-principala, var(--at-accent, #05386b));
+  color-scheme: light;
+}
+
+.formular-aplicatie input::placeholder,
+.formular-aplicatie textarea::placeholder {
+  color: #4a6b88;
+}
+.formular-linie {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+.formular-linie .camp-flexibil { flex: 1 1 200px; }
+.formular-grila {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.75rem;
+}
+.formular-grila .latime-completa { grid-column: 1 / -1; }
+
+.btn {
+  display: inline-block;
+  padding: 0.55rem 1rem;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  font: inherit;
+  text-align: center;
+}
+.btn-primary {
+  background: var(--at-accent);
+  color: #fff;
+}
+.btn-primary:hover { background: #042a50; color: #fff; }
+.btn-contur {
+  background: transparent;
+  border-color: var(--at-accent);
+  color: var(--at-accent);
+}
+.btn-contur:hover { background: var(--at-light); }
+
+.produs-detaliu {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.produs-galerie img { width: 100%; border-radius: var(--at-radius); object-fit: cover; max-height: 380px; }
+.miniaturi { display: flex; gap: 0.4rem; margin-top: 0.5rem; flex-wrap: wrap; }
+.miniatura { border: none; padding: 0; background: none; cursor: pointer; }
+.miniatura img { width: 72px; height: 54px; object-fit: cover; border-radius: 4px; }
+.insigna-tip { text-transform: uppercase; letter-spacing: 0.04em; color: var(--at-teal); font-size: 0.85rem; }
+.pret-vechi { text-decoration: line-through; color: var(--at-muted); margin-right: 0.5rem; }
+.pret-nou { font-size: 1.4rem; font-weight: 700; color: var(--at-accent); }
+.insigna-reducere {
+  background: var(--at-mint);
+  color: var(--at-accent);
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  margin-left: 0.4rem;
+}
+.facilitati { padding-left: 1.2rem; }
+.caseta-rezervare {
+  margin-top: 1.25rem;
+  padding: 1rem;
+  background: var(--at-light);
+  border-radius: var(--at-radius);
+}
+.actiuni-produs { margin: 1rem 0; }
+.harta-mica { height: 280px; border-radius: var(--at-radius); margin: 0.75rem 0 2rem; }
+.harta-completa { height: 520px; border-radius: var(--at-radius); border: 1px solid #c9d6c2; }
+.filtre-harta { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+.lista-recenzii { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.recenzie {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  background: #fff;
+  border-left: 3px solid var(--at-teal);
+}
+
+.panou-cautare {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: linear-gradient(180deg, #fff, var(--at-light));
+  border-radius: var(--at-radius);
+}
+.grila-pachete {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+.card-pachet {
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid #d5e0d0;
+  border-radius: var(--at-radius);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-pachet:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(5, 56, 107, 0.12);
+}
+.card-pachet a { color: inherit; text-decoration: none; }
+.card-pachet figure {
+  margin: 0 0 0.75rem;
+  overflow: hidden;
+  border-radius: var(--at-radius);
+}
+.card-pachet img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+.card-pachet .perioada-cautare {
+  font-weight: 600;
+  color: var(--at-accent, #0f68b1);
+}
+
+.lista-rezervari { display: flex; flex-direction: column; gap: 0.75rem; }
+.rezervare-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1rem;
+  border-radius: var(--at-radius);
+  border: 1px solid #d5e0d0;
+  background: #fff;
+}
+.rezervare-item.stare-confirmata { border-left: 4px solid var(--at-teal); }
+.rezervare-item.stare-in-asteptare { border-left: 4px solid #e0a800; }
+.rezervare-item.stare-anulata { border-left: 4px solid var(--at-danger); opacity: 0.85; }
+.actiuni { display: flex; gap: 0.5rem; align-items: center; }
+
+.file-admin {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+}
+.file-admin button {
+  padding: 0.45rem 0.85rem;
+  border: 1px solid var(--at-accent);
+  background: #fff;
+  color: var(--at-accent);
+  border-radius: 4px;
+  cursor: pointer;
+}
+.file-admin button.activ {
+  background: var(--at-accent);
+  color: #fff;
+}
+.fila-admin { display: none; }
+.fila-admin.activ { display: block; }
+.grila-statistici {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.card-statistica {
+  padding: 1rem;
+  background: linear-gradient(145deg, var(--at-accent), var(--at-teal));
+  color: #fff;
+  border-radius: var(--at-radius);
+}
+.card-statistica .valoare { font-size: 1.6rem; font-weight: 700; }
+.grila-grafice {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+.invelis-tabel-admin { overflow-x: auto; margin-top: 1rem; }
+.tabel-admin {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+.tabel-admin th, .tabel-admin td {
+  border: 1px solid #d5e0d0;
+  padding: 0.4rem 0.55rem;
+  text-align: left;
+}
+.tabel-admin th { background: var(--at-light); }
+.invelis-formular-admin { margin-bottom: 1rem; }
+.zona-incarcare {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 2px dashed var(--at-teal);
+  border-radius: var(--at-radius);
+}
+.previzualizare-incarcare { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 0.75rem 0; }
+.previzualizare-incarcare img { width: 100px; height: 70px; object-fit: cover; border-radius: 4px; }
+
+.cadru-chat { max-width: 640px; }
+.jurnal-chat {
+  height: 360px;
+  overflow-y: auto;
+  padding: 0.75rem;
+  background: #fff;
+  border: 1px solid #d5e0d0;
+  border-radius: var(--at-radius);
+  margin-bottom: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.mesaj-chat {
+  max-width: 85%;
+  padding: 0.55rem 0.75rem;
+  border-radius: 10px;
+  white-space: pre-wrap;
+  animation: fadeIn 0.25s ease;
+}
+.mesaj-chat.utilizator {
+  align-self: flex-end;
+  background: var(--at-accent);
+  color: #fff;
+}
+.mesaj-chat.asistent {
+  align-self: flex-start;
+  background: var(--at-light);
+  color: #222;
+}
+.formular-chat { display: flex; gap: 0.5rem; }
+.formular-chat input { flex: 1; padding: 0.55rem; border: 1px solid #9bb0a0; border-radius: 4px; }
+.sugestii-chat { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
+.sugestii-chat button {
+  border: 1px solid var(--at-teal);
+  background: #fff;
+  color: var(--at-teal);
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+.bara-utilizator {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0.35rem 1rem;
+  background: rgba(5, 56, 107, 0.08);
+  font-size: 0.9rem;
+}
+.bara-utilizator a { color: var(--at-accent); text-decoration: none; font-weight: 600; }
+.bara-utilizator a:hover { text-decoration: underline; }
+.insigna-notificare {
+  background: var(--at-mint);
+  color: var(--at-accent);
+  border-radius: 999px;
+  padding: 0 0.4rem;
+  font-size: 0.75rem;
+}
+
+@media (max-width: 800px) {
+  .produs-detaliu { grid-template-columns: 1fr; }
+  .harta-completa { height: 360px; }
+  .card-autentificare { margin: 1rem; }
+}
+
+.formular-aplicatie select {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23102033' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  background-size: 1rem;
+  padding-right: 2.6rem;
+  color: var(--culoare-principala, var(--at-accent, #05386b));
+}
+
+body.intunecat .pagina-aplicatie h1,
+body.intunecat .card-autentificare h1,
+body.intunecat .card-plata h1 {
+  color: #f8fbff;
+}
+
+body.intunecat .pret-nou {
+  color: #5eead4;
+}
+
+body.intunecat .eticheta-pagina {
+  background: rgba(56, 189, 248, 0.24);
+  color: #e0f2fe;
+}
+
+body.intunecat .card-autentificare,
+body.intunecat .card-plata,
+body.intunecat .cadru-chat {
+  background: #14324c;
+  border-color: rgba(125, 211, 252, 0.38);
+}
+
+body.intunecat .formular-aplicatie label {
+  color: #f1f5f9;
+}
+
+body.intunecat .formular-aplicatie input,
+body.intunecat .formular-aplicatie select,
+body.intunecat .formular-aplicatie textarea,
+body.intunecat .formular-aplicatie option {
+  background: #fff;
+  color: var(--culoare-principala, var(--at-accent, #05386b));
+}
+
+body.intunecat .estompat,
+body.intunecat .introducere {
+  color: #d7e6f4;
+}
+
+body.intunecat .card-autentificare a,
+body.intunecat .card-plata a {
+  color: #7dd3fc;
+}

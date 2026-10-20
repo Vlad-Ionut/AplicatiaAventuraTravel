@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <title>Chatbot AI — Aventura Travel</title>
+    <%- include('../fragmente/head.ejs') %>
+    <link rel="stylesheet" href="/resurse/css/app-features.css">
+</head>
+<body>
+<%- include('../fragmente/header.ejs') %>
+<main class="pagina-aplicatie">
+    <section class="cadru-chat">
+        <h1>Asistent AI Aventura Travel</h1>
+        <p class="estompat">Întrebări despre vacanțe, recomandări, destinații, program agenție. (OpenAI dacă e configurat, altfel răspunsuri inteligente locale)</p>
+        <div id="jurnal-chat" class="jurnal-chat" aria-live="polite"></div>
+        <form id="formular-chat" class="formular-chat">
+            <input type="text" id="camp-chat" placeholder="Ex: Recomandă un city break în Italia" autocomplete="off" required>
+            <button type="submit" class="btn btn-primary">Trimite</button>
+        </form>
+        <div class="sugestii-chat">
+            <button type="button" data-q="Care e programul agenției?">Program</button>
+            <button type="button" data-q="Recomandă un city break în Italia">City break Italia</button>
+            <button type="button" data-q="Pachete sub 2000 RON">Buget 2000</button>
+            <button type="button" data-q="Cum anulez o rezervare?">Anulare</button>
+        </div>
+    </section>
+</main>
+<%- include('../fragmente/footer.ejs') %>
+<script src="/js/asistent.js"></script>
+</body>
+</html>

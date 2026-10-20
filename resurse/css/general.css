@@ -1,0 +1,117 @@
+:root{
+	--margine-pagina:110px;
+
+	--page-side-padding:4rem;
+	--zone-padding:1.25rem;
+	--grid-gap:20px;
+
+	--media-width:100%;
+	--media-max-width:600px;
+	--media-min-width:220px;
+}
+
+body{
+	--culoare-principala:#05386B;
+	--culoare-background:#7dd6ff;
+	--culoare-accent:#379683;
+	--culoare-highlight:#00FFBF;
+	--culoare-text:#F5F5F5;
+	--culoare-contur:#05386B;
+	--culoare-fundal:#379683;
+	--culoarre-fundal:#379683;
+
+	font-family: "Oswald", sans-serif;
+	margin:0;
+	background-color:#7dd6ff;
+	padding-left:var(--page-side-padding);
+	padding-right:var(--page-side-padding);
+}
+
+body.intunecat{
+  --culoare-principala:#05386B;
+  --culoare-background:#082037;
+  --culoare-accent:#379683;
+  --culoare-highlight:#00FFBF;
+  --culoare-text:#F5F5F5;
+  --culoare-contur:#072e56;
+  --culoare-fundal:#379683;
+  --cl-marcare:rgb(81,43,81,0.5);
+  --cl-light-t:rgba(255,255,255,0.2);
+  --cl-text:white;
+  text-shadow:0px 0px 2px black,0px 0px 1px black,0px 0px 1px black;
+  background-color:#021a32;
+  --gradient-body:linear-gradient(transparent, transparent 25%, rgba(255,255,255,0.5) 50%, transparent 75%, transparent);
+}
+
+h1, h2{
+font-family: "Archivo Black", sans-serif;
+}
+
+header{
+background-color:var(--culoare-principala);
+color:var(--culoare-text);
+padding:var(--zone-padding);
+border-top-right-radius: 0px;
+border-top-left-radius: 0px;
+border-bottom-left-radius: 10px;
+border-bottom-right-radius: 10px;
+box-shadow:0 4px 20px rgba(0,0,0,0.2);
+margin-top:0;
+}
+
+
+footer{
+background-color:var(--culoare-principala);
+color:var(--culoare-text);
+padding:var(--zone-padding);
+border-radius:10px;
+box-shadow:0 4px 20px rgba(0,0,0,0.2);
+margin-bottom:20px;
+}
+
+main{
+margin-left:var(--margine-pagina);
+margin-right:var(--margine-pagina);
+}
+
+main img,
+main iframe,
+main embed,
+main video,
+footer img,
+footer iframe{
+width:var(--media-width);
+max-width:var(--media-max-width);
+min-width:var(--media-min-width);
+}
+
+@media screen and (max-width:1000px){
+	:root{
+		--margine-pagina:60px;
+		--page-side-padding:2.5rem;
+		--grid-gap:16px;
+		--media-max-width:520px;
+		--media-min-width:200px;
+	}
+}
+
+@media screen and (max-width:600px){
+	:root{
+		--margine-pagina:20px;
+		--page-side-padding:1rem;
+		--grid-gap:12px;
+		--media-max-width:100%;
+		--media-min-width:160px;
+	}
+}
+
+html,
+body,
+*{
+	scrollbar-width:none;
+}
+
+*::-webkit-scrollbar{
+	width:0;
+	height:0;
+}

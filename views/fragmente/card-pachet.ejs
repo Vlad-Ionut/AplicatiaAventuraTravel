@@ -1,0 +1,43 @@
+<%
+var p = pachet;
+var reducere = Number(p.reducere_procent || 0);
+var pretBaza = Number(p.pret || p.pret_final || 0);
+var pretFinal = p.pret_final ? Number(p.pret_final) : Math.round(pretBaza * (1 - reducere / 100));
+var imagine = p.imagine
+    ? (String(p.imagine).startsWith('/') ? p.imagine : '/resurse/imagini/pachete/' + p.imagine)
+    : '/resurse/imagini/galerie/mare/1.jpg';
+%>
+<article class="produs card-pachet"
+    data-pret="<%= pretFinal %>"
+    data-categorie="<%= p.categorie || '' %>"
+    data-nume="<%= p.destinatie %>">
+    <figure>
+        <a href="/produs/<%= p.id %>" aria-label="Vezi detalii pentru <%= p.destinatie %>">
+            <img src="<%= imagine %>"
+                 alt="<%= p.destinatie %>"
+                 loading="lazy"
+                 onerror="this.src='/resurse/imagini/galerie/mare/1.jpg'">
+        </a>
+    </figure>
+    <div class="corp-card-pachet">
+        <p class="insigna-tip"><%= p.tip_turism || 'vacanță' %></p>
+        <h3 class="nume">
+            <a href="/produs/<%= p.id %>"><span class="valoare-nume"><%= p.destinatie %></span></a>
+        </h3>
+        <p class="estompat"><%= p.tara || p.oras || 'Destinație premium' %> · <%= p.durata_zile || '?' %> zile</p>
+        <p class="pret">
+            <span class="pret-nou"><span class="valoare-pret"><%= pretFinal %></span> RON</span>
+            <% if (reducere > 0) { %>
+                <span class="insigna-reducere">−<%= reducere %>%</span>
+            <% } %>
+        </p>
+        <p class="categorie">Categorie: <span class="valoare-categorie"><%= p.categorie || 'standard' %></span></p>
+        <p class="persoane">Locuri disponibile: <span class="persoane"><%= p.locuri_disponibile || '-' %></span></p>
+        <div class="actiuni-catalog">
+            <a class="btn btn-primary" href="/produs/<%= p.id %>">Detalii & rezervare</a>
+            <% if (typeof showRemoveWishlist !== 'undefined' && showRemoveWishlist) { %>
+                <button type="button" class="btn btn-contur buton-elimina-favorit" data-id="<%= p.id %>">Elimină</button>
+            <% } %>
+        </div>
+    </div>
+</article>
